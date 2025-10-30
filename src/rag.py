@@ -4,19 +4,11 @@ import faiss
 import numpy as np
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
+from config import INDEX_PATH, METADATA_PATH, TOP_K, CHAT_MODEL_NAME, EMBED_MODEL_NAME, OPENAI_API_KEY
 from openai import OpenAI
 
-# Load env + OpenAI
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-CHAT_MODEL = "gpt-3.5-turbo"
-
-# Load embedding model and FAISS index
-TOP_K = 5
-EMBED_DIM = 384
-EMBED_MODEL = SentenceTransformer("all-MiniLM-L6-v2")
-INDEX_PATH = "../outputs/faiss_index.idx"
-METADATA_PATH = "../outputs/metadata.json"
+EMBED_MODEL = SentenceTransformer(EMBED_MODEL_NAME)
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 _index = None
 _metadata = None
@@ -43,6 +35,10 @@ def embed_query(query: str) -> np.ndarray:
 
 def retrieve_chunks(query: str, k: int = TOP_K) -> list:
     """Embed the query and return top-k matching chunks with metadata."""
+    global _index, _metadata
+    if _index is None or _metadata is None:
+        _index, _metadata = load_index_and_metadata()
+        
     query_vector = embed_query(query).reshape(1, -1)
     scores, indices = _index.search(query_vector, k)
 
@@ -90,7 +86,7 @@ def generate_answer(question: str, top_k: int = TOP_K) -> dict:
     prompt = build_prompt(question, context_chunks)
 
     response = client.chat.completions.create(
-        model=CHAT_MODEL,
+        model=CHAT_MODEL_NAME,
         messages=[
             {"role": "system", "content": "You are an expert on Hunger Games literature."},
             {"role": "user", "content": prompt}

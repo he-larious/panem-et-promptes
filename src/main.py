@@ -3,11 +3,7 @@ import faiss
 import json
 from preprocessing import load_documents_from_folder, chunk_documents, build_faiss_index
 from rag import generate_answer
-
-OUTPUT_DIR = "../outputs"
-INDEX_PATH = os.path.join(OUTPUT_DIR, "faiss_index.idx")
-METADATA_PATH = os.path.join(OUTPUT_DIR, "metadata.json")
-DATA_DIR = "../data"
+from config import DATA_DIR, OUTPUT_DIR, INDEX_PATH, METADATA_PATH
 
 def build_pipeline():
     """Runs ingestion, chunking, and embedding, and indexing."""

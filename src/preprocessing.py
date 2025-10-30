@@ -3,14 +3,11 @@ import fitz
 import faiss
 import json
 import numpy as np
+from config import CHUNK_SIZE, OVERLAP, EMBED_DIM, EMBED_MODEL_NAME
 from sentence_transformers import SentenceTransformer
 from typing import List, Dict
 
-# Constants
-CHUNK_SIZE = 200
-OVERLAP = 50
-EMBED_DIM = 384
-MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+EMBED_MODEL = SentenceTransformer(EMBED_MODEL_NAME)
 
 # ----------------------------
 # Ingestion Functions
@@ -82,7 +79,7 @@ def chunk_documents(docs: List[Dict]) -> List[Dict]:
 # ----------------------------
 
 def get_embedding(text) -> list:
-    return MODEL.encode(text).tolist()
+    return EMBED_MODEL.encode(text).tolist()
 
 def build_faiss_index(chunks: List[Dict]) -> tuple[faiss.IndexFlatIP, List[Dict]]:
     # FAISS index with Inner Product (for cosine similarity w/ normalized vectors)
