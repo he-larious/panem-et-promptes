@@ -94,12 +94,12 @@ def generate_answer(question: str, top_k: int = TOP_K) -> dict:
 
     answer = response.choices[0].message.content.strip()
 
+    # Remove duplicate (source, page) pairs
+    unique_sources = {(c["source"], c["page"]) for c in context_chunks}
+    sources = [{"source": s, "page": p} for s, p in unique_sources]
+
     return {
         "question": question,
         "answer": answer,
-        "sources": [
-            {"source": c["source"], "page": c["page"]}
-            for c in context_chunks
-        ],
-        "chunk_ids": [c["chunk_id"] for c in context_chunks]
+        "sources": sources
     }
