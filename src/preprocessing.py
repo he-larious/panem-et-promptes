@@ -81,9 +81,39 @@ def chunk_documents(docs: List[Dict]) -> List[Dict]:
 # Embedding Functions
 # ----------------------------
 
+def get_embedding(text) -> list:
+    return MODEL.encode(text).tolist()
 
+def build_faiss_index(chunks: List[Dict]) -> tuple[faiss.IndexFlatIP, List[Dict]]:
+    # FAISS index with Inner Product (for cosine similarity w/ normalized vectors)
+    # cos(θ) = A • B / (||A|| * ||B||)
+    # cos(θ) = A • B when ||A|| = ||B|| = 1
+    index = faiss.IndexFlatIP(EMBED_DIM)
+    metadata = []
+
+    for chunk in chunks:
+        emb = get_embedding(chunk["text"])
+        norm_emb = np.array(emb) / np.linalg.norm(emb)
+        index.add(np.array([norm_emb], dtype=np.float32))
+
+        metadata.append({
+            "chunk_id": chunk["chunk_id"],
+            "source": chunk["source"],
+            "page": chunk["page"],
+            "text": chunk["text"]
+        })
+
+    return index, metadata
 
 # Run this file to test the above code
 if __name__ == "__main__":
     docs = load_documents_from_folder("../data")
     chunks = chunk_documents(docs)
+    index, metadata = build_faiss_index(chunks)
+
+    os.makedirs("../outputs", exist_ok=True)
+    faiss.write_index(index, "../outputs/faiss_index.idx")
+    with open("../outputs/metadata.json", "w", encoding="utf-8") as f:
+        json.dump(metadata, f, indent=2)
+
+    print(f"✅ Indexed {len(metadata)} chunks.")
