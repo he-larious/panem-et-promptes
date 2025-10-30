@@ -14,7 +14,7 @@ METADATA_PATH = os.path.join(OUTPUT_DIR, "metadata.json")
 # ----------------------------
 # Embedding / Chunking Params
 # ----------------------------
-CHUNK_SIZE = 200
+CHUNK_SIZE = 250
 OVERLAP = 50
 EMBED_DIM = 384
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"

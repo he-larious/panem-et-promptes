@@ -1,8 +1,6 @@
-import os
 import json
 import faiss
 import numpy as np
-from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from config import INDEX_PATH, METADATA_PATH, TOP_K, CHAT_MODEL_NAME, EMBED_MODEL_NAME, OPENAI_API_KEY
 from openai import OpenAI
