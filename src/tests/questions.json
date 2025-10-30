@@ -1,0 +1,22 @@
+[
+  {
+    "question": "How does Katniss feel about the Capitol's use of the Hunger Games?",
+    "expected_answer": "Katniss sees the Games as a brutal form of control and punishment imposed by the Capitol. She despises them and views them as a symbol of oppression."
+  },
+  {
+    "question": "What is the symbolic role of the Mockingjay in the series?",
+    "expected_answer": "The Mockingjay becomes a symbol of rebellion and resistance against the Capitol. It represents unintended consequences and the power of defiance."
+  },
+  {
+    "question": "How does Peeta's approach to survival differ from Katniss's?",
+    "expected_answer": "Peeta wants to maintain his integrity and identity, even in the Games. He values staying true to himself, while Katniss is more focused on pragmatic survival and protecting her family."
+  },
+  {
+    "question": "Why is the first-person narrative style important in The Hunger Games?",
+    "expected_answer": "The first-person perspective provides intimate access to Katniss’s internal struggles and highlights her unreliability as a narrator, creating emotional depth and emphasizing individual perspective within a dystopian society."
+  },
+  {
+    "question": "How is reality television criticized in The Hunger Games?",
+    "expected_answer": "The series critiques how reality TV desensitizes viewers to violence and turns real suffering into entertainment, paralleling the Capitol's voyeuristic obsession with the Games."
+  }
+]
