@@ -1,7 +1,9 @@
 import json
+import os
 import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
+from preprocessing import build_pipeline
 from config import INDEX_PATH, METADATA_PATH, TOP_K, CHAT_MODEL_NAME, EMBED_MODEL_NAME, OPENAI_API_KEY
 from openai import OpenAI
 
@@ -13,6 +15,9 @@ _metadata = None
 
 def load_index_and_metadata():
     global _index, _metadata
+
+    if not os.path.exists(INDEX_PATH) or not os.path.exists(METADATA_PATH):
+        build_pipeline()
 
     if _index is None or _metadata is None:
         _index = faiss.read_index(INDEX_PATH)

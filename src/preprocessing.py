@@ -4,7 +4,7 @@ import fitz
 import faiss
 import json
 import numpy as np
-from config import CHUNK_SIZE, OVERLAP, EMBED_DIM, EMBED_MODEL_NAME
+from config import CHUNK_SIZE, OVERLAP, EMBED_DIM, EMBED_MODEL_NAME, DATA_DIR, OUTPUT_DIR, INDEX_PATH, METADATA_PATH
 from sentence_transformers import SentenceTransformer
 from typing import List, Dict
 
@@ -192,6 +192,24 @@ def build_faiss_index(chunks: List[Dict]) -> tuple[faiss.IndexFlatIP, List[Dict]
         })
 
     return index, metadata
+
+def build_pipeline():
+    """Runs ingestion, chunking, and embedding, and indexing."""
+    print("📥 Loading and parsing PDFs...")
+    docs = load_documents_from_folder(DATA_DIR)
+
+    print("✂️ Chunking text...")
+    chunks = chunk_documents(docs)
+
+    print("📊 Embedding and indexing...")
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    index, metadata = build_faiss_index(chunks)
+
+    faiss.write_index(index, INDEX_PATH)
+    with open(METADATA_PATH, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, indent=2)
+
+    print(f"✅ Index built with {len(metadata)} chunks.\n")
 
 # Run this file to test the above code
 if __name__ == "__main__":
