@@ -24,7 +24,7 @@ pip install -r requirements.txt
 2. Sign in or create an account
 3. Click "Create new secret key" and copy the key that begins with `sk-....`
 4. Duplicate the included `.env.example` file and rename it to `.env`
-5. Paste your API key in the OPENAI_API_KEY field, like so:
+5. Paste your API key in the `OPENAI_API_KEY` field, like so:
     ```bash
     OPENAI_API_KEY=sk-your-key-here
     ```

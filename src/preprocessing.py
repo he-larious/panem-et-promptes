@@ -169,27 +169,31 @@ def chunk_documents(docs: List[Dict]) -> List[Dict]:
 # Embedding Functions
 # ----------------------------
 
-def get_embedding(text) -> list:
-    return EMBED_MODEL.encode(text).tolist()
-
 def build_faiss_index(chunks: List[Dict]) -> tuple[faiss.IndexFlatIP, List[Dict]]:
+    # Batch encode embeddings for efficiency
+    texts = [chunk["text"] for chunk in chunks]
+    embeddings = EMBED_MODEL.encode(
+        texts, 
+        batch_size=32, 
+        convert_to_numpy=True, 
+        normalize_embeddings=True
+    ).astype("float32")
+
     # FAISS index with Inner Product (for cosine similarity w/ normalized vectors)
     # cos(θ) = A • B / (||A|| * ||B||)
     # cos(θ) = A • B when ||A|| = ||B|| = 1
     index = faiss.IndexFlatIP(EMBED_DIM)
-    metadata = []
+    index.add(embeddings)
 
-    for chunk in chunks:
-        emb = get_embedding(chunk["text"])
-        norm_emb = np.array(emb) / np.linalg.norm(emb)
-        index.add(np.array([norm_emb], dtype=np.float32))
-
-        metadata.append({
+    metadata = [
+        {
             "chunk_id": chunk["chunk_id"],
             "source": chunk["source"],
             "page": chunk["page"],
             "text": chunk["text"]
-        })
+        }
+        for chunk in chunks
+    ]
 
     return index, metadata
 
@@ -210,16 +214,3 @@ def build_pipeline():
         json.dump(metadata, f, indent=2)
 
     print(f"✅ Index built with {len(metadata)} chunks.\n")
-
-# Run this file to test the above code
-if __name__ == "__main__":
-    docs = load_documents_from_folder("../data")
-    chunks = chunk_documents(docs)
-    index, metadata = build_faiss_index(chunks)
-
-    os.makedirs("../outputs", exist_ok=True)
-    faiss.write_index(index, "../outputs/faiss_index.idx")
-    with open("../outputs/metadata.json", "w", encoding="utf-8") as f:
-        json.dump(metadata, f, indent=2)
-
-    print(f"✅ Indexed {len(metadata)} chunks.")
