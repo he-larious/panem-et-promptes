@@ -81,7 +81,12 @@ def remove_references_section(text: str) -> str:
     return text, match
 
 def extract_text_from_pdf(pdf_path):
-    doc = fitz.open(pdf_path)
+    try:
+        doc = fitz.open(pdf_path)
+    except Exception as e:
+        print(f"❌ Failed to open {pdf_path}: {e}")
+        return []
+
     pages = []
 
     try:

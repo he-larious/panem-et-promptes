@@ -17,7 +17,18 @@ def load_index_and_metadata():
     if not os.path.exists(INDEX_PATH) or not os.path.exists(METADATA_PATH):
         build_pipeline()
 
-    if _index is None or _metadata is None:
+    try:
+        if _index is None or _metadata is None:
+            _index = faiss.read_index(INDEX_PATH)
+
+            with open(METADATA_PATH, "r", encoding="utf-8") as f:
+                _metadata = json.load(f)
+    except Exception as e:
+        print(f"❌ Error loading FAISS index or metadata: {e}")
+        print("Rebuilding from scratch...")
+
+        build_pipeline()
+
         _index = faiss.read_index(INDEX_PATH)
 
         with open(METADATA_PATH, "r", encoding="utf-8") as f:
@@ -84,18 +95,31 @@ def build_prompt(question: str, context_chunks: list) -> str:
 def generate_answer(question: str, top_k: int = TOP_K) -> dict:
     """Retrieve relevant chunks and generate an answer using OpenAI API."""
     context_chunks = retrieve_chunks(question, k=top_k)
+
+    # Early exit if nothing retrieved
+    if not context_chunks:
+        return {
+            "question": question,
+            "answer": "The chunks were not in your favor.",
+            "sources": []
+        }
+    
     prompt = build_prompt(question, context_chunks)
 
-    response = client.chat.completions.create(
-        model=CHAT_MODEL_NAME,
-        messages=[
-            {"role": "system", "content": "You are an expert on Hunger Games literature."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.3
-    )
+    try:
+        response = client.chat.completions.create(
+            model=CHAT_MODEL_NAME,
+            messages=[
+                {"role": "system", "content": "You are an expert on Hunger Games literature."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.3
+        )
 
-    answer = response.choices[0].message.content.strip()
+        answer = response.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"❌ Error generating answer from OpenAI: {e}")
+        answer = "The chunks were not in your favor."
 
     # Remove duplicate (source, page) pairs
     unique_sources = {(c["source"], c["page"]) for c in context_chunks}
