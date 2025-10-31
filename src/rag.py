@@ -2,13 +2,11 @@ import json
 import os
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
 from preprocessing import build_pipeline
-from config import INDEX_PATH, METADATA_PATH, TOP_K, CHAT_MODEL_NAME, EMBED_MODEL_NAME, OPENAI_API_KEY
-from openai import OpenAI
+from config import INDEX_PATH, METADATA_PATH, TOP_K, CHAT_MODEL_NAME, get_embed_model, get_openai_client
 
-EMBED_MODEL = SentenceTransformer(EMBED_MODEL_NAME)
-client = OpenAI(api_key=OPENAI_API_KEY)
+EMBED_MODEL = get_embed_model()
+client = get_openai_client()
 
 _index = None
 _metadata = None
@@ -33,8 +31,8 @@ def load_index_and_metadata():
 
 def embed_query(query: str) -> np.ndarray:
     """Embed the user question into a vector."""
-    emb = EMBED_MODEL.encode(query)
-    return (emb / np.linalg.norm(emb)).astype(np.float32)
+    emb = EMBED_MODEL.encode([query], normalize_embeddings=True).astype(np.float32)
+    return emb
 
 def retrieve_chunks(query: str, k: int = TOP_K) -> list:
     """Embed the query and return top-k matching chunks with metadata."""
@@ -42,7 +40,7 @@ def retrieve_chunks(query: str, k: int = TOP_K) -> list:
     if _index is None or _metadata is None:
         _index, _metadata = load_index_and_metadata()
         
-    query_vector = embed_query(query).reshape(1, -1)
+    query_vector = embed_query(query)
     scores, indices = _index.search(query_vector, k)
 
     results = []

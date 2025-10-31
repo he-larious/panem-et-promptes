@@ -1,11 +1,12 @@
 import os
 import json
 import numpy as np
-from sentence_transformers import SentenceTransformer, util
+from sentence_transformers import util
+from config import get_embed_model
 from rag import generate_answer
 from config import TOP_K
 
-EMBED_MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+EMBED_MODEL = get_embed_model()
 
 # ----------------------------
 # Evaluation Metrics

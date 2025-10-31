@@ -3,12 +3,10 @@ import re
 import fitz
 import faiss
 import json
-import numpy as np
-from config import CHUNK_SIZE, OVERLAP, EMBED_DIM, EMBED_MODEL_NAME, DATA_DIR, OUTPUT_DIR, INDEX_PATH, METADATA_PATH
-from sentence_transformers import SentenceTransformer
+from config import CHUNK_SIZE, OVERLAP, EMBED_DIM, DATA_DIR, OUTPUT_DIR, INDEX_PATH, METADATA_PATH, get_embed_model
 from typing import List, Dict
 
-EMBED_MODEL = SentenceTransformer(EMBED_MODEL_NAME)
+EMBED_MODEL = get_embed_model()
 
 # Patterns that usually appear at the top of academic PDFs
 COVER_PATTERNS = [
