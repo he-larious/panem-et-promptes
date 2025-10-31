@@ -26,6 +26,9 @@ def precision_recall(retrieved, relevant):
     retrieved_set = {(s["source"], s["page"]) for s in retrieved}
     relevant_set = {(s["source"], s["page"]) for s in relevant}
 
+    if not relevant_set:
+        return None, None
+
     intersection = retrieved_set & relevant_set
 
     precision = len(intersection) / len(retrieved_set) if retrieved_set else 0
@@ -50,41 +53,55 @@ def evaluate_question(q: dict):
         "expected_answer": q["expected_answer"],
         "generated_answer": result["answer"],
         "similarity": round(cosine, 2),
-        "precision": round(precision, 2),
-        "recall": round(recall, 2),
+        "precision": round(precision, 2) if precision is not None else None,
+        "recall": round(recall, 2) if recall is not None else None,
         "sources": result["sources"]
     }
 
-def run_evaluation(path="questions.json"):
+def run_evaluation(path="questions.json", output_file="tests/eval_results.txt"):
+    os.makedirs("tests", exist_ok=True)
+    
     with open(os.path.join("tests", path), "r", encoding="utf-8") as f:
         questions = json.load(f)
 
     scores = []
+    precisions = []
+    recalls = []
 
-    print("🔍 Evaluating RAG System...\n")
+    with open(output_file, "w", encoding="utf-8") as out:
+        out.write("🔍 Evaluating RAG System...\n\n")
 
-    for q in questions:
-        result = evaluate_question(q)
-        scores.append(result)
+        for q in questions:
+            result = evaluate_question(q)
+            scores.append(result)
+            
+            precision = result["precision"]
+            recall = result["recall"]
 
-        print(f"🧠 Q: {result['question']}")
-        print(f"✅ Expected: {result['expected_answer']}")
-        print(f"🤖 Generated: {result['generated_answer']}")
-        print(f"📐 Cosine Similarity: {result['similarity']}")
-        print(f"📊 Precision@{TOP_K}: {result['precision']}")
-        print(f"📊 Recall@{TOP_K}: {result['recall']}")
-        print(f"📚 Sources Used: {[s['source'] + ' (pg ' + str(s['page']) + ')' for s in result['sources']]}")
-        print("-" * 60)
+            if precision is not None:
+                precisions.append(precision)
+                recalls.append(recall)
 
-    # Average metrics
-    avg_similarity = np.mean([r["similarity"] for r in scores])
-    avg_precision = np.mean([r["precision"] for r in scores])
-    avg_recall = np.mean([r["recall"] for r in scores])
+            out.write(f"🧠 Q: {result['question']}\n")
+            out.write(f"✅ Expected: {result['expected_answer']}\n")
+            out.write(f"🤖 Generated: {result['generated_answer']}\n")
+            out.write(f"📐 Cosine Similarity: {result['similarity']}\n")
+            out.write(f"📊 Precision@{TOP_K}: {precision}\n")
+            out.write(f"📊 Recall@{TOP_K}: {recall}\n")
+            out.write(f"📚 Sources Used: {set([s['source'] + ' (pg ' + str(s['page']) + ')' for s in result['sources']])}\n")
+            out.write("-" * 60 + "\n")
 
-    print("\n📈 Overall Evaluation")
-    print(f"Avg Cosine Similarity: {round(avg_similarity, 2)}")
-    print(f"Avg Precision@{TOP_K}: {round(avg_precision, 2)}")
-    print(f"Avg Recall@{TOP_K}: {round(avg_recall, 2)}")
+        # Average metrics
+        avg_similarity = np.mean([r["similarity"] for r in scores])
+        avg_precision = np.mean(precisions) if precisions else 0
+        avg_recall = np.mean(recalls) if recalls else 0
+
+        out.write("\n📈 Overall Evaluation\n")
+        out.write(f"Avg Cosine Similarity: {round(avg_similarity, 2)}\n")
+        out.write(f"Avg Precision@{TOP_K}: {round(avg_precision, 2)}\n")
+        out.write(f"Avg Recall@{TOP_K}: {round(avg_recall, 2)}\n")
+
+    print(f"✅ Evaluation results saved to: {output_file}")
 
 if __name__ == "__main__":
     run_evaluation()

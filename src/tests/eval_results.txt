@@ -1,0 +1,63 @@
+🔍 Evaluating RAG System...
+
+🧠 Q: Why do many readers fail to interpret The Hunger Games as true dystopian critique?
+✅ Expected: Readers become absorbed in the violence and fast-paced narrative instead of reflecting critically on its dystopian message. They consume the story as entertainment rather than questioning its social implications.
+🤖 Generated: Many readers fail to interpret The Hunger Games as true dystopian critique because they do not question the similarities between American entertainment culture and the culture of Panem, nor do they seek ways to change their society. They do not recognize that the Capitol mirrors the privilege and passivity of American culture, and they identify with the population that engineers and watches the Hunger Games rather than the one that fights in them.
+📐 Cosine Similarity: 0.53
+📊 Precision@5: 1.0
+📊 Recall@5: 0.75
+📚 Sources Used: {'Beyond_Sensation.pdf (pg 2)', 'Beyond_Sensation.pdf (pg 3)', 'Beyond_Sensation.pdf (pg 1)'}
+------------------------------------------------------------
+🧠 Q: What does the Capitol symbolize in the dystopian world of Panem?
+✅ Expected: The Capitol symbolizes the capitalist ruling class that controls the means of production, wealth, and governance. It uses power and violence to dominate the working-class districts, maintaining control through economic manipulation and fear.
+🤖 Generated: The Capitol symbolizes the authoritarian government that manipulates and oppresses the people of Panem, using tactics such as creating division among the districts, enforcing strict laws and regulations, and using food as a means of control and suppression.
+📐 Cosine Similarity: 0.78
+📊 Precision@5: 0.75
+📊 Recall@5: 1.0
+📚 Sources Used: {'Dystopian_Perspective.pdf (pg 3)', 'Dystopian_Perspective.pdf (pg 4)', 'Dystopian_Perspective.pdf (pg 5)', 'Oppression_and_Resistance.pdf (pg 25)'}
+------------------------------------------------------------
+🧠 Q: What are Gale's views on violence and freedom?
+✅ Expected: Gale believes that violence is a necessary means to achieve freedom from the Capitol’s oppression. He sees rebellion and warfare as justified responses to injustice, even if they require sacrifice or cruelty.
+🤖 Generated: Gale is quick to choose violence and does not see the issues with killing innocent people for the rebellion. He longs for revenge on not only the Capitol but its citizens, in an attempt to retribute for all of the losses he and his family have suffered. His plan suggests that the rebels should suffocate the mountain, showing his lack of interest in preserving lives.
+📐 Cosine Similarity: 0.76
+📊 Precision@5: 1.0
+📊 Recall@5: 1.0
+📚 Sources Used: {'Psychology_in_Hunger_Games.pdf (pg 4)'}
+------------------------------------------------------------
+🧠 Q: What does Finnick’s experience with sexual exploitation reveal about the Capitol’s use of power and control?
+✅ Expected: Finnick’s abuse exposes how the Capitol weaponizes intimacy and desire to maintain control over victors. Though admired publicly as a symbol of beauty and charm, he is privately exploited and coerced, showing how even the celebrated are stripped of agency. His trauma reflects the Capitol’s corruption and its ability to turn human vulnerability into another form of entertainment and dominance.
+🤖 Generated: Finnick's experience with sexual exploitation reveals that the Capitol uses power and control to oppress and manipulate the Victors. President Snow sells the bodies of desirable Victors as rewards or for exorbitant amounts of money, using coercion and threats to ensure compliance. This form of oppression deprives the Victors of basic human rights and demonstrates the Capitol's ability to exert control over their bodies and choices.
+📐 Cosine Similarity: 0.83
+📊 Precision@5: 0.4
+📊 Recall@5: 1.0
+📚 Sources Used: {'Dystopian_Perspective.pdf (pg 4)', 'Oppression_and_Resistance.pdf (pg 41)', 'Oppression_and_Resistance.pdf (pg 43)', 'Oppression_and_Resistance.pdf (pg 44)', 'Beyond_Sensation.pdf (pg 8)'}
+------------------------------------------------------------
+🧠 Q: What parallels can be drawn between the Hunger Games and modern reality TV?
+✅ Expected: The Hunger Games mirrors reality television by turning human suffering into entertainment. Just as reality TV blurs the line between authenticity and performance, the Games turn life-and-death struggles into a spectacle designed to distract and control the public. Viewers become complicit in the violence, consuming it as entertainment while ignoring its moral implications—much like audiences of sensationalized media today.
+🤖 Generated: The chunks were not in your favor.
+📐 Cosine Similarity: 0.11
+📊 Precision@5: 0.5
+📊 Recall@5: 1.0
+📚 Sources Used: {'Oppression_and_Resistance.pdf (pg 52)', 'Beyond_Sensation.pdf (pg 3)', 'Beyond_Sensation.pdf (pg 4)', 'Beyond_Sensation.pdf (pg 1)'}
+------------------------------------------------------------
+🧠 Q: What does the Mockingjay symbolize?
+✅ Expected: The Mockingjay symbolizes rebellion, resilience, and unintended resistance against oppression. Originally a failed Capitol experiment, the bird becomes a living reminder that control can backfire. For Katniss, it represents defiance and survival; for Panem, it becomes the emblem of collective resistance and the power of voices that cannot be silenced.
+🤖 Generated: The Mockingjay symbolizes hope and unity, serving as a powerful symbol of resistance and rebellion against the oppressive Capitol.
+📐 Cosine Similarity: 0.79
+📊 Precision@5: 0.6
+📊 Recall@5: 1.0
+📚 Sources Used: {'Oppression_and_Resistance.pdf (pg 14)', 'Oppression_and_Resistance.pdf (pg 15)', 'Oppression_and_Resistance.pdf (pg 47)', 'Oppression_and_Resistance.pdf (pg 33)', 'Oppression_and_Resistance.pdf (pg 5)'}
+------------------------------------------------------------
+🧠 Q: What are the economic policies of District 14 in The Hunger Games?
+✅ Expected: The chunks were not in your favor.
+🤖 Generated: The chunks were not in your favor.
+📐 Cosine Similarity: 1.0
+📊 Precision@5: None
+📊 Recall@5: None
+📚 Sources Used: {'Dystopian_Perspective.pdf (pg 3)', 'Dystopian_Perspective.pdf (pg 4)', 'Oppression_and_Resistance.pdf (pg 9)', 'Oppression_and_Resistance.pdf (pg 5)', 'Oppression_and_Resistance.pdf (pg 25)'}
+------------------------------------------------------------
+
+📈 Overall Evaluation
+Avg Cosine Similarity: 0.69
+Avg Precision@5: 0.71
+Avg Recall@5: 0.96

@@ -49,5 +49,10 @@
       {"source": "Oppression_and_Resistance.pdf", "page": 15},
       {"source": "Oppression_and_Resistance.pdf", "page": 47}
     ]
+  },
+  {
+    "question": "What are the economic policies of District 14 in The Hunger Games?",
+    "expected_answer": "The chunks were not in your favor.",
+    "relevant_sources": []
   }
 ]
