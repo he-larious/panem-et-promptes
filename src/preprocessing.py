@@ -3,7 +3,7 @@ import re
 import fitz
 import faiss
 import json
-from config import CHUNK_SIZE, OVERLAP, EMBED_DIM, DATA_DIR, OUTPUT_DIR, INDEX_PATH, METADATA_PATH, get_embed_model
+from config import CHUNK_WORDS, OVERLAP_WORDS, EMBED_DIM, DATA_DIR, OUTPUT_DIR, INDEX_PATH, METADATA_PATH, get_embed_model
 from typing import List, Dict
 
 EMBED_MODEL = get_embed_model()
@@ -140,7 +140,7 @@ def load_documents_from_folder(folder_path):
 # Chunking Functions
 # ----------------------------
 
-def split_text_into_chunks(text, chunk_size=CHUNK_SIZE, overlap=OVERLAP) -> List[str]:
+def split_text_into_chunks(text, chunk_size=CHUNK_WORDS, overlap=OVERLAP_WORDS) -> List[str]:
     words = text.split()
     chunks = []
 

@@ -4,7 +4,7 @@ import numpy as np
 from sentence_transformers import util
 from config import get_embed_model
 from rag import generate_answer
-from config import TOP_K
+from config import TOP_K, EVALUATION_DIR, QUESTIONS_PATH
 
 EMBED_MODEL = get_embed_model()
 
@@ -59,10 +59,13 @@ def evaluate_question(q: dict):
         "sources": result["sources"]
     }
 
-def run_evaluation(path="questions.json", output_file="tests/eval_results.txt"):
-    os.makedirs("tests", exist_ok=True)
+def run_evaluation(path=QUESTIONS_PATH, output_file=None):
+    os.makedirs(EVALUATION_DIR, exist_ok=True)
     
-    with open(os.path.join("tests", path), "r", encoding="utf-8") as f:
+    if not output_file:
+        output_file = os.path.join(EVALUATION_DIR, "eval_results.txt")
+
+    with open(path, "r", encoding="utf-8") as f:
         questions = json.load(f)
 
     scores = []

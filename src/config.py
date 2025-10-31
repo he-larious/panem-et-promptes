@@ -11,14 +11,16 @@ load_dotenv()
 # ----------------------------
 DATA_DIR = "../data"
 OUTPUT_DIR = "../outputs"
+EVALUATION_DIR = "../evaluation"
 INDEX_PATH = os.path.join(OUTPUT_DIR, "faiss_index.idx")
 METADATA_PATH = os.path.join(OUTPUT_DIR, "metadata.json")
+QUESTIONS_PATH = os.path.join(EVALUATION_DIR, "questions.json")
 
 # ----------------------------
 # Embedding / Chunking Params
 # ----------------------------
-CHUNK_SIZE = 250
-OVERLAP = 50
+CHUNK_WORDS = 250
+OVERLAP_WORDS = 50
 EMBED_DIM = 384
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
 
