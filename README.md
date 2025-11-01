@@ -28,12 +28,12 @@ pip install -r requirements.txt
     ```
 
 ### Running the Program
-To run the interactive QA system:
+To run the interactive QA system, use this command in the `src` folder.
 ```bash
 python main.py
 ```
 
-To run the evaluation script:
+To run the evaluation script, use this command in the `src` folder.
 ```bash
 python evaluate.py
 ```
